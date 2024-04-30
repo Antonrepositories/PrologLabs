@@ -50,22 +50,31 @@ findUnreachable1([X|Xs], Lines, Visited, Result) :-
     findUnreachable1(Xs, Lines, Visited, Result).
 findUnreachable1([X|Xs], Lines, Visited, Result) :-
     \+ member(X, Visited),
+    %writeln(">>>>>>>>>>>"),
+    %write("Visited: "),
     %writeln(Visited),
     %writeln(X),
     append([X], Visited, NewVisited),
+    %write("NewVisited: "),
     %writeln(NewVisited),
-    get_right_parts(X, Lines, RelevantLines),
-    %writeln(RelevantLines),
+    atom_string(X, StringX), 
+    get_right_parts(StringX, Lines, RelevantLines),
+    %write("Relevant: "),
+    %writeln(X),
     getUppercaseCharsList(RelevantLines, UppercaseChars),
+    %write("Chars: "),
     %writeln(UppercaseChars),
     append(Xs, UppercaseChars, UpdatedXs),
+    %write("Updated: "),
+    %writeln(UpdatedXs),
+    %writeln(">>>>>>>>>>>"),
     findUnreachable1(UpdatedXs, Lines, NewVisited, Result).
 
 
 main :- 
     read_transitions('grammar.txt', Trn),
     writeln(Trn),
-    %get_right_parts("A", Trn, Relevant),
+    %get_right_parts("B", Trn, Relevant),
     %writeln(Relevant),
     findUnreachable1(["S"], Trn, [], Result),
     write("Reachable non-terminals: "),
