@@ -1,5 +1,6 @@
-S>cB
-B>bA
-A>pB
-K>L
-S>y
+S>a
+S>cA
+A>bB
+B>aR
+C>R
+R>r
