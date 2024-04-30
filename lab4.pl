@@ -71,14 +71,57 @@ findUnreachable1([X|Xs], Lines, Visited, Result) :-
     findUnreachable1(UpdatedXs, Lines, NewVisited, Result).
 
 
+print_list([]).
+print_list([transition(Left, Right)|Xs]) :-
+    format('~w -> ~w~n', [Left, Right]),
+    print_list(Xs).
+
+
+get_unique_lefts(Transitions, UniqueLefts) :-
+    findall(Left, member(transition(Left, _), Transitions), Lefts),
+    list_to_set(Lefts, UniqueLefts).
+
+
+
+element_to_string(Element, Element) :-
+    string(Element).
+
+element_to_string(Element, String) :-
+    atom(Element),
+    atom_string(Element, String).
+
+element_to_string(Element, String) :-
+    number(Element),
+    number_string(Element, String).
+
+element_to_string(Element, String) :-
+    term_to_atom(Element, Atom),
+    atom_string(Atom, String).
+
+list_to_string([], []).
+
+list_to_string([Head|Tail], [StringHead|StringTail]) :-
+    element_to_string(Head, StringHead),
+    list_to_string(Tail, StringTail).
+
+
+
 main :- 
     read_transitions('grammar.txt', Trn),
-    writeln(Trn),
+    print_list(Trn),
     %get_right_parts("B", Trn, Relevant),
     %writeln(Relevant),
     findUnreachable1(["S"], Trn, [], Result),
+    get_unique_lefts(Trn, R),
+    list_to_string(Result, Result1),
+    list_to_string(R, R1),
     write("Reachable non-terminals: "),
-    writeln(Result).
+    writeln(Result1),
+    write("All non-terminals: "),
+    writeln(R1),
+    subtract(R1, Result1, Unreachable),
+    write("Unreachable non-terminals: "),
+    writeln(Unreachable).
 
 :- initialization(main).
 

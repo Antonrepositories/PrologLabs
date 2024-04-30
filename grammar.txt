@@ -1,5 +1,5 @@
 S>cB
 B>bA
-A>pBL
+A>pB
 K>L
 S>y
