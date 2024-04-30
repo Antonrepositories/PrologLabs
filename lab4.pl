@@ -105,6 +105,16 @@ list_to_string([Head|Tail], [StringHead|StringTail]) :-
     list_to_string(Tail, StringTail).
 
 
+transition_member(Element, List) :-
+    member(transition(Element, _), List).
+
+filter_transition_left([], _, []).
+filter_transition_left([transition(Left, Right) | T], List1, [transition(Left, Right) | Filtered]) :-
+    member(Left, List1),
+    filter_transition_left(T, List1, Filtered).
+filter_transition_left([_ | T], List1, Filtered) :-
+    filter_transition_left(T, List1, Filtered).
+
 
 main :- 
     read_transitions('grammar.txt', Trn),
@@ -121,7 +131,10 @@ main :-
     writeln(R1),
     subtract(R1, Result1, Unreachable),
     write("Unreachable non-terminals: "),
-    writeln(Unreachable).
+    writeln(Unreachable),
+    filter_transition_left(Trn, Result1, Res),
+    writeln("Filtered grammar: "),
+    print_list(Res).
 
 :- initialization(main).
 
