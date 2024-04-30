@@ -62,7 +62,7 @@ main :-
     %Transitions = [transition('q0', 'a', 'q1'), transition('q1', 'b', 'q2'), transition('q2', 'a', 'q3')],
     InitialState = "0",
     %FinalStates = ["1"],
-    read_transitions('transitions.txt', Trn),
+    read_transitions('trn.txt', Trn),
     read_states('finalstates.txt', States),
     write(Trn),
     writeln(States),
